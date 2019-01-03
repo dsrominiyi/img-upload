@@ -1,0 +1,48 @@
+{
+  "name": "l-a-web-app-client",
+  "version": "1.0.0",
+  "description": "Life & Art Web App",
+  "main": "",
+  "scripts": {
+    "start": "webpack-dev-server --progress --colors",
+    "test": "mocha --require @babel/polyfill --require @babel/register --require test/helpers/setup.js test/unit/*/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsrominiyi/img-upload.git"
+  },
+  "author": "Damilola Rominiyi",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.1",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
+    "chai": "^4.2.0",
+    "css-loader": "^2.0.1",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
+    "eslint": "^5.10.0",
+    "eslint-plugin-react": "^7.11.1",
+    "exports-loader": "^0.7.0",
+    "mocha": "^5.2.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "sinon": "^7.2.2",
+    "sinon-chai": "^3.3.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3"
+  }
+}

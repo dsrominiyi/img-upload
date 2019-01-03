@@ -1,0 +1,86 @@
+{
+  "env": {
+    "node": true,
+    "es6": true,
+    "jasmine": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": { 
+    "ecmaVersion": 2017,
+    "ecmaFeatures": {
+      "modules": true
+    },
+    "sourceType": "module" 
+  },
+  "rules": {
+    "curly": [
+      2,
+      "all"
+    ],
+    "new-cap": 2,
+    "max-depth": [
+      2,
+      5
+    ],
+    "no-use-before-define": 0,
+    "block-scoped-var": 2,
+    "guard-for-in": 2,
+    "operator-linebreak": [
+      2,
+      "before"
+    ],
+    "comma-dangle": [
+      2,
+      "never"
+    ],
+    "max-len": [
+      2,
+      200
+    ],
+    "camelcase": [
+      2,
+      {
+        "properties": "never"
+      }
+    ],
+    "comma-style": [
+      2,
+      "last"
+    ],
+    "newline-after-var": 0,
+    "indent": [
+      2,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "arrow-spacing": [
+      2,
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "prefer-spread": 2,
+    "prefer-const": 2,
+    "no-const-assign": 2,
+    "no-extra-semi": 2,
+    "semi": [
+      2,
+      "always"
+    ],
+    "no-unused-vars": [
+      2,
+      {
+        "args": "none"
+      }
+    ],
+    "no-undef": 2,
+    "keyword-spacing": 2
+  }
+}

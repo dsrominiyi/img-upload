@@ -1,0 +1,12 @@
+# dependencies
+/client/node_modules
+/server/node_modules
+
+# production
+/client/public/app/bundle.js*
+/server/server.js*
+
+# misc
+/client/npm-debug.log*
+.idea*
+.vscode*

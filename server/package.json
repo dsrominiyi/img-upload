@@ -1,0 +1,36 @@
+{
+  "name": "l-a-web-app-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "npm-run-all --parallel watch:server watch:build",
+    "watch:build": "webpack --watch",
+    "watch:server": "nodemon ./server.js",
+    "compile": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "./node_modules/eslint/bin/eslint.js ./",
+    "deploy": "npm run compile; sh deploy.sh"
+  },
+  "author": "Damilola Rominiyi",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.15.4",
+    "express-fileupload": "^1.1.1-alpha.1",
+    "serenitydi": "^1.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.2.3",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
+    "eslint": "^5.10.0",
+    "nodemon": "^1.12.1",
+    "npm-run-all": "^4.1.1",
+    "webpack": "^4.27.1"
+  }
+}
