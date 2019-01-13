@@ -47,11 +47,11 @@ class ImageUploadForm extends Component {
     this.setState({ imageCount: newCount, selectedFiles });
   }
 
-  handleSelectedFiles = e => {
+  handleSelectedFiles = files => {
     const { selectedFiles, imageCount } = this.state;
     const selectedFileNames = selectedFiles.map(file => file.name);
 
-    Array.from(e.target.files).forEach(file => {
+    Array.from(files).forEach(file => {
       const newFile = selectedFileNames.indexOf(file.name) === -1;
       const belowSizeLimit = (file.size <= 5242880);
 
@@ -80,16 +80,28 @@ class ImageUploadForm extends Component {
     this.setState({ selectedFiles });
   }
 
+  upload = () => {
+    const { name, email, selectedFiles } = this.state;
+    const formData = new FormData();
+
+    formData.append('name', name);
+    formData.append('email', email);
+
+    selectedFiles.forEach(file => {
+      formData.append('images', file);
+    });
+  }
+
   renderFileList = () => {
     const { imageCount, selectedFiles } = this.state;
     const fileList = [];
-    for (let i=0; i<imageCount; i++) {
+    for (let i = 0; i < imageCount; i++) {
       const file = selectedFiles[i];
       fileList.push(
-        <div className={`fileItem ${file ? 'selected' : 'unselected' }`} key={i}>
-          {file ? file.name : <em>{`Add File ${i+1}`}</em>}
+        <div className={`fileItem ${file ? 'selected' : 'unselected'}`} key={i}>
+          {file ? file.name : <em>{`Add File ${i + 1}`}</em>}
           {
-            file 
+            file
               ? (
                 <span
                   className="remove"
@@ -97,7 +109,7 @@ class ImageUploadForm extends Component {
                 >
                   <DeleteCross />
                 </span>
-              ) 
+              )
               : ''
           }
         </div>
@@ -120,20 +132,7 @@ class ImageUploadForm extends Component {
         <div className="box">
           <div className="row">
             <div className="left">
-              <label htmlFor="imageCount" id="imageCountLabel">Number of images</label>
-              <select
-                id="imageCount"
-                name="imageCount"
-                value={imageCount}
-                onChange={e => this.updateImageCount(e.target.value)}
-              >
-                { 
-                  Array.from(
-                    Array(this.MAX_IMAGES), 
-                    (_,i) => i+1
-                  ).map(number => <option value={number}>{number}</option>) 
-                }
-              </select>
+              <h3>Customer Details</h3>
 
               <label htmlFor="name" id="nameLabel">Name</label>
               <input
@@ -156,28 +155,43 @@ class ImageUploadForm extends Component {
               />
             </div>
 
-            <div className="right align-c">
-              <h3>Pricing</h3>
-              <p className="larger-text">£{total}</p>
-              <p className="larger-text"><span>(£{pricePerImg.toFixed(2)} per image)</span></p>
+            <div className="right">
+              <h3>Order Details</h3>
+
+              <label htmlFor="imageCount" id="imageCountLabel">Number of images</label>
+              <select
+                id="imageCount"
+                name="imageCount"
+                value={imageCount}
+                onChange={e => this.updateImageCount(e.target.value)}
+              >
+                {
+                  Array.from(
+                    Array(this.MAX_IMAGES),
+                    (_, i) => i + 1
+                  ).map(number => <option value={number}>{number}</option>)
+                }
+              </select>
+              <p>Cost: £{total} <span>(£{pricePerImg.toFixed(2)} per image)</span></p>
+
+              <label htmlFor="images" id="imagesUpload">Files</label>
+              <input
+                ref={fileSelector => this.fileSelector = fileSelector}
+                style={{ display: 'none' }}
+                type="file"
+                name="imagesUpload"
+                accept="image/*"
+                onChange={e => this.handleSelectedFiles(e.target.files)}
+                multiple
+              />
+              <input type="button" id="fileSelector" value="Add files" onClick={e => this.fileSelector ? this.fileSelector.click() : null} />
+
+              {this.renderFileList()}
+
+              <button onClick={this.upload}></button>
             </div>
           </div>
 
-          <div className="row">
-            <label htmlFor="images" id="imagesUpload">Files</label>
-            <input
-              ref={ fileSelector => this.fileSelector = fileSelector }
-              style={{ display: 'none' }}
-              type="file"
-              name="imagesUpload"
-              accept="image/*"
-              onChange={this.handleSelectedFiles}
-              multiple
-            />
-            <input type="button" id="fileSelector" value="Add files" onClick={e => this.fileSelector ? this.fileSelector.click() : null} />
-          </div>
-
-          <div className="row">{this.renderFileList()}</div>
         </div>
 
       </form>
