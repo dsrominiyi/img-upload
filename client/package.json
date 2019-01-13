@@ -43,6 +43,7 @@
   "dependencies": {
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.6.3",
+    "react-paypal-express-checkout": "^1.0.5"
   }
 }

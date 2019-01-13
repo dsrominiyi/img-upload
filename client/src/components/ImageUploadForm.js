@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-
+import PayPalCheckout from './PayPalCheckout';
 import DeleteCross from './svg/DeleteCross';
+import LoadingSpinner from './img/LoadingSpinner';
 
 class ImageUploadForm extends Component {
 
@@ -8,7 +9,8 @@ class ImageUploadForm extends Component {
     imageCount: 1,
     name: '',
     email: '',
-    selectedFiles: []
+    selectedFiles: [],
+    uploading: false
   };
 
   MAX_IMAGES = 10;
@@ -80,16 +82,33 @@ class ImageUploadForm extends Component {
     this.setState({ selectedFiles });
   }
 
-  upload = () => {
-    const { name, email, selectedFiles } = this.state;
+  onPaymentSuccess = payment => {
+    console.log('PAYMENT DUN!!');
+    console.log(payment);
+  }
+
+  upload = async (e) => {
+    e.preventDefault();
+
+    const { name, email, selectedFiles, imageCount } = this.state;
     const formData = new FormData();
 
     formData.append('name', name);
     formData.append('email', email);
+    formData.append('imageCount', imageCount);
+    formData.append('cost', JSON.stringify(this.calculateCost()));
 
     selectedFiles.forEach(file => {
       formData.append('images', file);
     });
+
+    try {
+      await fetch('http://localhost:6307/upload', { body: formData, method: 'post' });
+    } catch (err) {
+      console.error(err);
+    }
+
+    this.setState({ uploading: false });
   }
 
   renderFileList = () => {
@@ -121,7 +140,7 @@ class ImageUploadForm extends Component {
 
 
   render() {
-    const { imageCount, name, email } = this.state;
+    const { imageCount, name, email, uploading } = this.state;
 
     const { total, pricePerImg } = this.calculateCost();
 
@@ -169,10 +188,11 @@ class ImageUploadForm extends Component {
                   Array.from(
                     Array(this.MAX_IMAGES),
                     (_, i) => i + 1
-                  ).map(number => <option value={number}>{number}</option>)
+                  ).map((number, i) => <option value={number} key={i}>{number}</option>)
                 }
               </select>
               <p>Cost: £{total} <span>(£{pricePerImg.toFixed(2)} per image)</span></p>
+              <PayPalCheckout total={total} onSuccess={this.onPaymentSuccess} />
 
               <label htmlFor="images" id="imagesUpload">Files</label>
               <input
@@ -188,7 +208,17 @@ class ImageUploadForm extends Component {
 
               {this.renderFileList()}
 
-              <button onClick={this.upload}></button>
+
+              {
+                uploading
+                  ? <LoadingSpinner />
+                  : (
+                    <button onClick={e => { this.setState({ uploading: true }, () => this.upload(e)); }}>
+                      Upload Files
+                    </button>
+                  )
+              }
+
             </div>
           </div>
 

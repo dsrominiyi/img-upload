@@ -5,8 +5,13 @@
 # production
 /client/public/app/bundle.js*
 /server/server.js*
+/server/uploads
+
+# sensitive
+**/creds.json*
 
 # misc
-/client/npm-debug.log*
+**/package-lock*
+**/npm-debug.log*
 .idea*
 .vscode*

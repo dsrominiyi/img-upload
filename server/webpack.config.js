@@ -23,7 +23,6 @@ module.exports = {
     exprContextRegExp: /$^/,
     exprContextCritical: false
   },
-  plugins: [new webpack.IgnorePlugin(/^vertx$/)],
   target: 'node',
   stats: {
     colors: true

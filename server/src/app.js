@@ -1,10 +1,8 @@
 import express from 'express';
-import di from 'serenitydi';
 import cors from 'cors';
-import bodyParser  from 'body-parser';
-
-import register from './register';
-import routes from './routes';
+import bodyParser from 'body-parser';
+import fileUpload from 'express-fileupload';
+import { upload } from './handlers';
 
 const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
 const port = process.env.PORT || 6307;
@@ -15,26 +13,23 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
+app.use(cors({ origin: clientUrl }));
+app.use(bodyParser.json());
+app.use(fileUpload());
+
+app.options('*', cors());
+
 app.use((req, res, next) => {
   console.log(`request: ${req.method} ${req.url}`);
   next();
 });
 
-app.use(cors({ origin: clientUrl }));
-app.use(bodyParser.json());
-
-app.options('*', cors());
-
-register(di);
-routes(app, di);
-
 app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).send({
-    success: false,
-    error: 'An unknown error occurred'
-  });
+  console.error(err.stack);
+  res.status(500).send('Server error');
 });
+
+app.post('/upload', upload);
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
