@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+
 import PayPalCheckout from './PayPalCheckout';
 import DeleteCross from './svg/DeleteCross';
-import LoadingSpinner from './img/LoadingSpinner';
+import LoadingSpinner from './svg/LoadingSpinner';
 
 class ImageUploadForm extends Component {
 
@@ -10,10 +12,19 @@ class ImageUploadForm extends Component {
     name: '',
     email: '',
     selectedFiles: [],
-    uploading: false
+    paid: false,
+    uploading: false,
+    notification: false,
+    uploaded: false
   };
 
   MAX_IMAGES = 10;
+  ERROR_PAY_FIRST = 'Once payment has been made image upload will be available';
+  ERROR_DETAILS_REQUIRED = 'You must enter your name & email before uploading';
+  ERROR_SELECT_IMAGES = 'You must select all your images before uploading';
+  ERROR_FILE_SIZE = 'Images must be 5MB or less';
+  SUCCESS_PAYMENT = 'You may now upload your images';
+  SUCCESS_UPLOAD = 'Your images have been uploaded. You will receive an email notification when your order is complete';
 
   calculateCost = () => {
     const { imageCount } = this.state;
@@ -52,6 +63,7 @@ class ImageUploadForm extends Component {
   handleSelectedFiles = files => {
     const { selectedFiles, imageCount } = this.state;
     const selectedFileNames = selectedFiles.map(file => file.name);
+    let sizeLimitBreach = false;
 
     Array.from(files).forEach(file => {
       const newFile = selectedFileNames.indexOf(file.name) === -1;
@@ -60,6 +72,9 @@ class ImageUploadForm extends Component {
       if (newFile && belowSizeLimit) {
         selectedFiles.push(file);
       }
+      if (!belowSizeLimit) {
+        sizeLimitBreach = true;
+      }
     });
 
     if (selectedFiles.length > imageCount) {
@@ -67,7 +82,14 @@ class ImageUploadForm extends Component {
     }
 
     this.fileSelector.value = ''; // clears element's FileList
-    this.setState({ selectedFiles });
+    this.setState(
+      { selectedFiles },
+      () => {
+        if (sizeLimitBreach) {
+          this.notification('error', this.ERROR_FILE_SIZE, 'File Size');
+        }
+      }
+    );
   }
 
   removeFile = fileToRemove => {
@@ -83,13 +105,46 @@ class ImageUploadForm extends Component {
   }
 
   onPaymentSuccess = payment => {
-    console.log('PAYMENT DUN!!');
-    console.log(payment);
+    this.setState(
+      { paid: true },
+      () => this.notification('success', this.SUCCESS_PAYMENT, 'Payment Made')
+    );
   }
 
-  upload = async (e) => {
-    e.preventDefault();
+  notification = (type, message, title, timeOut = null, priority = false) => {
+    timeOut = timeOut || 5000;
+    const { notification } = this.state;
 
+    if (!notification || notification !== title || priority) {
+      this.setState({ notification: title }, () => {
+        const timer = setTimeout(() => this.setState({ notification: false }), timeOut);
+        NotificationManager[type](
+          message,
+          title,
+          timeOut,
+          () => this.setState({ notification: false }, () => clearTimeout(timer)),
+          priority
+        );
+      });
+    }
+  }
+
+  tryUpload = e => {
+    e.preventDefault();
+    const { paid, name, email, selectedFiles, imageCount } = this.state;
+
+    if (!paid) {
+      return this.notification('error', this.ERROR_PAY_FIRST, 'Payment Required');
+    } else if (!name || !email) {
+      return this.notification('error', this.ERROR_DETAILS_REQUIRED, 'Details Required');
+    }
+    if (selectedFiles.length !== parseInt(imageCount)) {
+      return this.notification('error', this.ERROR_SELECT_IMAGES, 'Select Your Images');
+    }
+    this.setState({ uploading: true }, () => this.upload());
+  }
+
+  upload = async () => {
     const { name, email, selectedFiles, imageCount } = this.state;
     const formData = new FormData();
 
@@ -103,12 +158,15 @@ class ImageUploadForm extends Component {
     });
 
     try {
-      await fetch('http://localhost:6307/upload', { body: formData, method: 'post' });
+      await fetch('http://52.56.137.29:6307/upload', { body: formData, method: 'post' });
     } catch (err) {
       console.error(err);
     }
 
-    this.setState({ uploading: false });
+    this.setState(
+      { uploading: false, uploaded: true },
+      this.notification('success', this.SUCCESS_UPLOAD, 'Files Uploaded', 10000, true)
+    );
   }
 
   renderFileList = () => {
@@ -118,7 +176,7 @@ class ImageUploadForm extends Component {
       const file = selectedFiles[i];
       fileList.push(
         <div className={`fileItem ${file ? 'selected' : 'unselected'}`} key={i}>
-          {file ? file.name : <em>{`Add File ${i + 1}`}</em>}
+          {file ? file.name : `Add File ${i + 1}`}
           {
             file
               ? (
@@ -140,7 +198,7 @@ class ImageUploadForm extends Component {
 
 
   render() {
-    const { imageCount, name, email, uploading } = this.state;
+    const { imageCount, name, email, paid, uploading, uploaded } = this.state;
 
     const { total, pricePerImg } = this.calculateCost();
 
@@ -148,82 +206,96 @@ class ImageUploadForm extends Component {
       <form>
         <h2>3D Parallax - Submit Your Order</h2>
 
-        <div className="box">
-          <div className="row">
-            <div className="left">
-              <h3>Customer Details</h3>
+        {
+          uploaded
+            ? <div className="box"><h1>Order Submitted</h1></div>
+            : <div className="box">
 
-              <label htmlFor="name" id="nameLabel">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Your name"
-                value={name}
-                onChange={e => this.setState({ name: e.target.value })}
-              />
-
-              <label htmlFor="email" id="emailLabel">Email</label>
-              <input
-                type="text"
-                id="email"
-                name="email"
-                placeholder="Your email address"
-                value={email}
-                onChange={e => this.setState({ email: e.target.value })}
-              />
-            </div>
-
-            <div className="right">
               <h3>Order Details</h3>
+              <div className="row">
+                <div className="rowItem">
+                  <label htmlFor="name" id="nameLabel">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Your name"
+                    value={name}
+                    onChange={e => this.setState({ name: e.target.value })}
+                  />
+                  <label htmlFor="email" id="emailLabel">Email</label>
+                  <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    placeholder="Your email address"
+                    value={email}
+                    onChange={e => this.setState({ email: e.target.value })}
+                  />
+                </div>
+                <div className="rowItem">
+                  <label htmlFor="imageCount" id="imageCountLabel">Number of images</label>
+                  <select
+                    id="imageCount"
+                    name="imageCount"
+                    value={imageCount}
+                    onChange={e => this.updateImageCount(e.target.value)}
+                    disabled={paid}
+                    className={paid ? 'disabled' : ''}
+                  >
+                    {
+                      Array.from(
+                        Array(this.MAX_IMAGES),
+                        (_, i) => i + 1
+                      ).map((number, i) => <option value={number} key={i}>{number}</option>)
+                    }
+                  </select>
+                  <label><em>Cost: £{total} <span>(£{pricePerImg.toFixed(2)} per image)</span></em></label>
+                  {paid ? '' : <PayPalCheckout total={total} onSuccess={this.onPaymentSuccess} />}
+                </div>
+              </div>
 
-              <label htmlFor="imageCount" id="imageCountLabel">Number of images</label>
-              <select
-                id="imageCount"
-                name="imageCount"
-                value={imageCount}
-                onChange={e => this.updateImageCount(e.target.value)}
-              >
+              <h3>Upload Your Images</h3>
+              <div className="row">
+                <input
+                  ref={fileSelector => this.fileSelector = fileSelector}
+                  style={{ display: 'none' }}
+                  type="file"
+                  name="imagesUpload"
+                  accept="image/*"
+                  onChange={e => this.handleSelectedFiles(e.target.files)}
+                  multiple
+                />
+                <button
+                  id="fileSelectorBtn"
+                  onClick={e => this.fileSelector ? this.fileSelector.click(e.preventDefault()) : null}
+                >
+                  Add Files
+                </button>
+              </div>
+
+              <div className="fileList">{this.renderFileList()}</div>
+
+              <div className="centered">
                 {
-                  Array.from(
-                    Array(this.MAX_IMAGES),
-                    (_, i) => i + 1
-                  ).map((number, i) => <option value={number} key={i}>{number}</option>)
+                  uploading
+                    ? <LoadingSpinner />
+                    : (
+                      <button
+                        onClick={this.tryUpload}
+                        className={!paid ? 'disabled' : ''}
+                        id="uploadFilesBtn"
+                      >
+                        Upload Files
+                      </button>
+                    )
                 }
-              </select>
-              <p>Cost: £{total} <span>(£{pricePerImg.toFixed(2)} per image)</span></p>
-              <PayPalCheckout total={total} onSuccess={this.onPaymentSuccess} />
-
-              <label htmlFor="images" id="imagesUpload">Files</label>
-              <input
-                ref={fileSelector => this.fileSelector = fileSelector}
-                style={{ display: 'none' }}
-                type="file"
-                name="imagesUpload"
-                accept="image/*"
-                onChange={e => this.handleSelectedFiles(e.target.files)}
-                multiple
-              />
-              <input type="button" id="fileSelector" value="Add files" onClick={e => this.fileSelector ? this.fileSelector.click() : null} />
-
-              {this.renderFileList()}
-
-
-              {
-                uploading
-                  ? <LoadingSpinner />
-                  : (
-                    <button onClick={e => { this.setState({ uploading: true }, () => this.upload(e)); }}>
-                      Upload Files
-                    </button>
-                  )
-              }
+              </div>
 
             </div>
-          </div>
+        }
 
-        </div>
-
+        <NotificationContainer />
       </form>
     );
   }

@@ -1,0 +1,1 @@
+scp server.js bitnami@52.56.137.29:server/

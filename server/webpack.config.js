@@ -1,5 +1,4 @@
 require('@babel/polyfill');
-var webpack = require('webpack');
 
 module.exports = {
   entry: ['@babel/polyfill', './src/app.js'],

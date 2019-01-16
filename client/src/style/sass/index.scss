@@ -1,3 +1,8 @@
+$lime: #9ce2da;
+$light-grey: #3f3f3f;
+$dark-grey: #292929;
+$text-color: #d9d9d9;
+
 body {
   font-family: Open Sans Condensed;
   font-weight: 300;
@@ -7,11 +12,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
   text-size-adjust: 100%;
+  background-color: $light-grey;
+}
+
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 2.5em;
+    color: $lime;
 }
 
 h2,
 h3 {
-  color: #9ce2da;
+  color: $lime;
   text-transform: uppercase;
   line-height: 0.9em;
   letter-spacing: -1px;
@@ -20,72 +33,139 @@ h2 {
   font-size: 4.5em;
 }
 h3 {
-  font-size: 1.5em;
-  margin: 15px 0;
+  font-size: 2em;
+  margin: 0;
+  padding-left: 30px;
 }
 
 p {
   margin: 10px 0;
 }
 
+em {
+  font-style: inherit;
+  color: $lime;
+}
+
 .align-c {
   text-align: center;
+}
+
+.centered {
+  text-align: center;
+}
+
+#form {
+  text-align: center;
+}
+
+.remove {
+  float: right;
+  cursor: pointer;
 }
 
 form {
   text-align: center;
   display: inline-block;
-  max-width: 1100px;
+  max-width: 800px;
   .box {
-    width: 90%;
-    display: inline-block;
-    background-color: #292929;
+    text-align: left;
+    background-color: $dark-grey;
     padding: 30px 0;
     border-radius: 5px;
-    color: #d9d9d9;
+    color: $text-color;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
     .row {
-      width: 80%;
-      display: inline-block;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
       text-align: left;
-      margin: 0 0 20px;
       font-size: 1.5em;
+      padding: 20px 30px;
       .larger-text {
         font-size: 1.3em;
       }
-      .left,
-      .right {
-        width: 50%;
-        display: inline-block;
-        vertical-align: top;
+      .rowItem {
+        flex: 1;
+        display: grid;
+        min-width: 244px;
       }
+    }
+    .fileList {
+      padding: 20px 30px;
+      margin: 0 30px;
+      box-shadow: inset 0px 0px 18px 0px rgba(0, 0, 0, 0.75);
+      border-radius: 5px;
+      font-size: 1.3em;
+      box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
   label {
-    display: inline-block;
-    width: 100%;
-    margin: 8px 0 0;
+    margin: 10px 0;
   }
   span {
     font-weight: 400;
   }
   input:not([type="file"]),
   select {
-    display: inline-block;
-    font-size: 0.6em;
+    display: block;
+    box-sizing: border-box;
+    height: 45px;
+    font-size: 0.8em;
     margin: 8px 0;
     padding: 10px;
     border-radius: 3px;
-    border: 1px solid transparent;
-    border-top: none;
-    border-bottom: 1px solid #ddd;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.39), 0 -1px 1px #fff,
-      0 1px 0 #fff;
-    background-color: #d9d9d9;
-    &[type="text"] {
-      width: 75%;
-    }
-    &[type="number"] {
-      width: 10%;
+    border: none;
+    box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.5);
+    background-color: $dark-grey;
+    color: $text-color;
+    border-bottom: 2px solid $lime;
+    transition: all 0.1s;
+  }
+  input:not([type="file"]) {
+    width: 90%;
+  }
+  select {
+    width: 20%;
+    > option {
+      background: $dark-grey;
+      outline: 1px solid $lime;
     }
   }
+}
+
+button {
+    background-color: $dark-grey;
+    color: $text-color;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8em;
+    border-radius: 5px;
+    padding: 6px 10px;
+    transition: all 0.3s;
+    &:hover {
+      background-color: $light-grey;
+      color: $lime
+    }
+    &.disabled {
+      &:hover {
+        color: $text-color;
+      }
+    }
+}
+
+.disabled {
+  cursor: not-allowed;
+}
+
+#uploadFilesBtn {
+    font-size: 1.5em;
+    margin: 20px 0 5px;
+    width: 90%;
+}
+
+.paypal-button {
+  margin-top: 9px;
 }

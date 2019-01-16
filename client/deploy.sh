@@ -1,0 +1,1 @@
+scp -r public/* bitnami@52.56.137.29:htdocs/
