@@ -204,95 +204,95 @@ class ImageUploadForm extends Component {
 
     return (
       <form>
-        <h2>3D Parallax - Submit Your Order</h2>
+        <h2>3D Parallax<br />Submit Your Order</h2>
 
         {
           uploaded
             ? <div className="box"><h1>Order Submitted</h1></div>
-            : <div className="box">
-
-              <h3>Order Details</h3>
-              <div className="row">
-                <div className="rowItem">
-                  <label htmlFor="name" id="nameLabel">Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Your name"
-                    value={name}
-                    onChange={e => this.setState({ name: e.target.value })}
-                  />
-                  <label htmlFor="email" id="emailLabel">Email</label>
-                  <input
-                    type="text"
-                    id="email"
-                    name="email"
-                    placeholder="Your email address"
-                    value={email}
-                    onChange={e => this.setState({ email: e.target.value })}
-                  />
+            : (
+              <div className="box">
+                <h3>Order Details</h3>
+                <div className="row">
+                  <div className="rowItem">
+                    <label htmlFor="name" id="nameLabel">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="Your name"
+                      value={name}
+                      onChange={e => this.setState({ name: e.target.value })}
+                    />
+                    <label htmlFor="email" id="emailLabel">Email</label>
+                    <input
+                      type="text"
+                      id="email"
+                      name="email"
+                      placeholder="Your email address"
+                      value={email}
+                      onChange={e => this.setState({ email: e.target.value })}
+                    />
+                  </div>
+                  <div className="rowItem">
+                    <label htmlFor="imageCount" id="imageCountLabel">Number of images</label>
+                    <select
+                      id="imageCount"
+                      name="imageCount"
+                      value={imageCount}
+                      onChange={e => this.updateImageCount(e.target.value)}
+                      disabled={paid}
+                      className={paid ? 'disabled' : ''}
+                    >
+                      {
+                        Array.from(
+                          Array(this.MAX_IMAGES),
+                          (_, i) => i + 1
+                        ).map((number, i) => <option value={number} key={i}>{number}</option>)
+                      }
+                    </select>
+                    <label><em>Cost: £{total} <span>(£{pricePerImg.toFixed(2)} per image)</span></em></label>
+                    {paid ? '' : <PayPalCheckout total={total} onSuccess={this.onPaymentSuccess} />}
+                  </div>
                 </div>
-                <div className="rowItem">
-                  <label htmlFor="imageCount" id="imageCountLabel">Number of images</label>
-                  <select
-                    id="imageCount"
-                    name="imageCount"
-                    value={imageCount}
-                    onChange={e => this.updateImageCount(e.target.value)}
-                    disabled={paid}
-                    className={paid ? 'disabled' : ''}
+
+                <h3>Upload Your Images</h3>
+                <div className="row">
+                  <input
+                    ref={fileSelector => this.fileSelector = fileSelector}
+                    style={{ display: 'none' }}
+                    type="file"
+                    name="imagesUpload"
+                    accept="image/*"
+                    onChange={e => this.handleSelectedFiles(e.target.files)}
+                    multiple
+                  />
+                  <button
+                    id="fileSelectorBtn"
+                    onClick={e => this.fileSelector ? this.fileSelector.click(e.preventDefault()) : null}
                   >
-                    {
-                      Array.from(
-                        Array(this.MAX_IMAGES),
-                        (_, i) => i + 1
-                      ).map((number, i) => <option value={number} key={i}>{number}</option>)
-                    }
-                  </select>
-                  <label><em>Cost: £{total} <span>(£{pricePerImg.toFixed(2)} per image)</span></em></label>
-                  {paid ? '' : <PayPalCheckout total={total} onSuccess={this.onPaymentSuccess} />}
+                    Add Files
+                  </button>
+                </div>
+
+                <div className="fileList">{this.renderFileList()}</div>
+
+                <div className="centered">
+                  {
+                    uploading
+                      ? <LoadingSpinner />
+                      : (
+                        <button
+                          onClick={this.tryUpload}
+                          className={!paid ? 'disabled' : ''}
+                          id="uploadFilesBtn"
+                        >
+                          Upload Files
+                        </button>
+                      )
+                  }
                 </div>
               </div>
-
-              <h3>Upload Your Images</h3>
-              <div className="row">
-                <input
-                  ref={fileSelector => this.fileSelector = fileSelector}
-                  style={{ display: 'none' }}
-                  type="file"
-                  name="imagesUpload"
-                  accept="image/*"
-                  onChange={e => this.handleSelectedFiles(e.target.files)}
-                  multiple
-                />
-                <button
-                  id="fileSelectorBtn"
-                  onClick={e => this.fileSelector ? this.fileSelector.click(e.preventDefault()) : null}
-                >
-                  Add Files
-                </button>
-              </div>
-
-              <div className="fileList">{this.renderFileList()}</div>
-
-              <div className="centered">
-                {
-                  uploading
-                    ? <LoadingSpinner />
-                    : (
-                      <button
-                        onClick={this.tryUpload}
-                        className={!paid ? 'disabled' : ''}
-                        id="uploadFilesBtn"
-                      >
-                        Upload Files
-                      </button>
-                    )
-                }
-              </div>
-
-            </div>
+            )
         }
 
         <NotificationContainer />
