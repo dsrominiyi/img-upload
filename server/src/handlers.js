@@ -7,7 +7,7 @@ const fs = promises;
 export const upload = async (req, res, next) => {
 
   const { name, email, imageCount, cost } = req.body;
-  const { images } = req.files;
+  let { images } = req.files;
 
   if (images.length === 0) {
     return res.status(400).send('No files were uploaded.');
@@ -29,6 +29,8 @@ export const upload = async (req, res, next) => {
   }
 
   const errors = [];
+
+  images = images.length ? images : [ images ];
   for (const image of images) {
     try {
       image.path = `${dirPath}/${image.name}`;
