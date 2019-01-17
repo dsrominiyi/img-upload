@@ -176,7 +176,7 @@ class ImageUploadForm extends Component {
       const file = selectedFiles[i];
       fileList.push(
         <div className={`fileItem ${file ? 'selected' : 'unselected'}`} key={i}>
-          {file ? file.name : `Add File ${i + 1}`}
+          {file ? file.name : `Add Image ${i + 1}`}
           {
             file
               ? (
@@ -211,7 +211,7 @@ class ImageUploadForm extends Component {
             ? <div className="box"><h1>Order Submitted</h1></div>
             : (
               <div className="box">
-                <h3>Order Details</h3>
+                <h3>1: Enter Order Details And Make Payment</h3>
                 <div className="row">
                   <div className="rowItem">
                     <label htmlFor="name" id="nameLabel">Name</label>
@@ -255,7 +255,7 @@ class ImageUploadForm extends Component {
                   </div>
                 </div>
 
-                <h3>Upload Your Images</h3>
+                <h3>2: Upload Your Images</h3>
                 <div className="row">
                   <input
                     ref={fileSelector => this.fileSelector = fileSelector}
@@ -270,7 +270,7 @@ class ImageUploadForm extends Component {
                     id="fileSelectorBtn"
                     onClick={e => this.fileSelector ? this.fileSelector.click(e.preventDefault()) : null}
                   >
-                    Add Files
+                    Add Images
                   </button>
                 </div>
 
@@ -286,7 +286,7 @@ class ImageUploadForm extends Component {
                           className={!paid ? 'disabled' : ''}
                           id="uploadFilesBtn"
                         >
-                          Upload Files
+                          Upload Images
                         </button>
                       )
                   }
