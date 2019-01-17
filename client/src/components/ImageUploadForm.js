@@ -241,7 +241,7 @@ class ImageUploadForm extends Component {
                       value={imageCount}
                       onChange={e => this.updateImageCount(e.target.value)}
                       disabled={paid}
-                      className={paid ? 'disabled' : ''}
+                      className={paid && 'disabled'}
                     >
                       {
                         Array.from(
@@ -250,8 +250,10 @@ class ImageUploadForm extends Component {
                         ).map((number, i) => <option value={number} key={i}>{number}</option>)
                       }
                     </select>
-                    <label><em>Cost: £{total} <span>(£{pricePerImg.toFixed(2)} per image)</span></em></label>
-                    {paid ? '' : <PayPalCheckout total={total} onSuccess={this.onPaymentSuccess} />}
+                    <label>
+                      <em>Cost: £{total} {imageCount > 1 && <span>(£{pricePerImg.toFixed(2)} per image)</span>}</em>
+                    </label>
+                    {!paid && <PayPalCheckout total={total} onSuccess={this.onPaymentSuccess} />}
                   </div>
                 </div>
 
