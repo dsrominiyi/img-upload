@@ -4,10 +4,10 @@
   "description": "Life & Art Web App",
   "main": "",
   "scripts": {
-    "start": "webpack-dev-server --progress --colors",
+    "start": "webpack-dev-server --env dev --progress --colors",
     "test": "mocha --require @babel/polyfill --require @babel/register --require test/helpers/setup.js test/unit/*/*.test.js",
-    "compile": "./node_modules/webpack/bin/webpack.js --progress --colors",
-    "deploy": "npm run compile; sh deploy.sh"
+    "compile": "./node_modules/webpack/bin/webpack.js --env prod --progress --colors",
+    "deploy": "sh deploy.sh"
   },
   "repository": {
     "type": "git",

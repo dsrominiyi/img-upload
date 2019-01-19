@@ -5,6 +5,7 @@ import GoogleApiClient from './services/GoogleApiClient';
 const fs = promises;
 
 export const upload = async (req, res, next) => {
+  req.setTimeout(300000);
 
   const { name, email, imageCount, cost } = req.body;
   let { images } = req.files;
@@ -30,7 +31,7 @@ export const upload = async (req, res, next) => {
 
   const errors = [];
 
-  images = images.length ? images : [ images ];
+  images = images.length ? images : [images];
   for (const image of images) {
     try {
       image.path = `${dirPath}/${image.name}`;

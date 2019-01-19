@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import fileUpload from 'express-fileupload';
 import { upload } from './handlers';
 
-const clientUrl = process.env.CLIENT_URL || 'http://52.56.137.29:3000';
+const clientUrl = process.env.LA_CLIENT_URL || 'http://localhost';
 const port = process.env.PORT || 6307;
 const app = express();
 

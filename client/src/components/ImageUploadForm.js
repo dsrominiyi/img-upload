@@ -5,6 +5,8 @@ import PayPalCheckout from './PayPalCheckout';
 import DeleteCross from './svg/DeleteCross';
 import LoadingSpinner from './svg/LoadingSpinner';
 
+import { apiUrl } from '../config.json';
+
 class ImageUploadForm extends Component {
 
   state = {
@@ -111,8 +113,7 @@ class ImageUploadForm extends Component {
     );
   }
 
-  notification = (type, message, title, timeOut = null, priority = false) => {
-    timeOut = timeOut || 5000;
+  notification = (type, message, title, timeOut = 5000, priority = false) => {
     const { notification } = this.state;
 
     if (!notification || notification !== title || priority) {
@@ -158,7 +159,7 @@ class ImageUploadForm extends Component {
     });
 
     try {
-      await fetch('http://52.56.137.29:6307/upload', { body: formData, method: 'post' });
+      await fetch(`${apiUrl}/upload`, { body: formData, method: 'post' });
     } catch (err) {
       console.error(err);
     }
