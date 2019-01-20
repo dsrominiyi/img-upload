@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import ReactTooltip from 'react-tooltip';
 
 import PayPalCheckout from './PayPalCheckout';
 import DeleteCross from './svg/DeleteCross';
@@ -25,8 +26,12 @@ class ImageUploadForm extends Component {
   ERROR_DETAILS_REQUIRED = 'You must enter your name & email before uploading';
   ERROR_SELECT_IMAGES = 'You must select all your images before uploading';
   ERROR_FILE_SIZE = 'Images must be 5MB or less';
+  ERROR_UPLOAD = 'There was an error uplaoding the images. See the \'Problem uploading?\' link below';
   SUCCESS_PAYMENT = 'You may now upload your images';
-  SUCCESS_UPLOAD = 'Your images have been uploaded. You will receive an email notification when your order is complete';
+  SUCCESS_UPLOAD = 'Your images have been uploaded';
+  TOOLTIP_UPLOAD = `
+    If you\'ve made payment and your image upload fails,<br>create a zip of your images and send them to contact@lifeandartmedia.co.uk using wetransfer.com. <br>
+    Be sure to include your email and name in the message.`;
 
   calculateCost = () => {
     const { imageCount } = this.state;
@@ -161,6 +166,10 @@ class ImageUploadForm extends Component {
     try {
       await fetch(`${apiUrl}/upload`, { body: formData, method: 'post' });
     } catch (err) {
+      return this.setState(
+        { uploading: false },
+        this.notification('error', this.ERROR_UPLOAD, 'Error', 10000, true)
+      );
       console.error(err);
     }
 
@@ -209,7 +218,12 @@ class ImageUploadForm extends Component {
 
         {
           uploaded
-            ? <div className="box"><h1>Order Submitted</h1></div>
+            ? (
+              <div className="box">
+                <h1>Order Submitted</h1>
+                <p>{`We'll send an email to ${email} when your order is complete.`}</p>
+              </div>
+            )
             : (
               <div className="box">
                 <h3>1: Enter Order Details And Make Payment</h3>
@@ -242,7 +256,7 @@ class ImageUploadForm extends Component {
                       value={imageCount}
                       onChange={e => this.updateImageCount(e.target.value)}
                       disabled={paid}
-                      className={paid && 'disabled'}
+                      className={paid ? 'disabled' : ''}
                     >
                       {
                         Array.from(
@@ -252,9 +266,9 @@ class ImageUploadForm extends Component {
                       }
                     </select>
                     <label>
-                      <em>Cost: £{total} {imageCount > 1 && <span>(£{pricePerImg.toFixed(2)} per image)</span>}</em>
+                      <em>Cost: £{total} {imageCount > 1 ? <span>(£{pricePerImg.toFixed(2)} per image)</span> : ''}</em>
                     </label>
-                    {!paid && <PayPalCheckout total={total} onSuccess={this.onPaymentSuccess} />}
+                    {!paid ? <PayPalCheckout total={total} onSuccess={this.onPaymentSuccess} /> : ''}
                   </div>
                 </div>
 
@@ -294,11 +308,16 @@ class ImageUploadForm extends Component {
                       )
                   }
                 </div>
+                <div className="footer">
+                  <a data-tip={this.TOOLTIP_UPLOAD}>Problem uploading?</a>
+                  contact@lifeandartmedia.co.uk
+                </div>
               </div>
             )
         }
 
         <NotificationContainer />
+        <ReactTooltip effect="solid" multiline={true} />
       </form>
     );
   }

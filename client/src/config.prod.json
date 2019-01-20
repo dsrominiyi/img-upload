@@ -1,8 +1,8 @@
 {
-  "apiUrl": "http://52.56.137.29:6307",
+  "apiUrl": "https://parallax.lifeandartmedia.co.uk:6308",
   "paypal": {
     "env": "production",
     "sandbox": "AQr0aPcvsJ0PVPRU-V3wnaF69ZMVeXf07i8Dm4CQe7tTRPKM9U_G9E3pVrbEIGq2VKMLzErA-Qt6OftR",
-    "production": "AVa7CsXTanTrnHG-It8CCzQ5LhqeOGJbeX7SV1jSKxoDAO34vUZ30LaDuMZ7p7spIaTfgXxN3Hxy2ojs3"
+    "production": "AVa7CsXTanTrnHG-It8CCzQ5LhqeOGJbeX7SV1jSKxoDAO34vUZ30LaDuMZ7p7spIaTfgXxN3Hxy2ojs"
   }
 }

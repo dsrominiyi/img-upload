@@ -1,1 +1,2 @@
-scp server.js bitnami@52.56.137.29:server/
+npm run compile
+scp server.js bitnami@parallax.lifeandartmedia.co.uk:server/

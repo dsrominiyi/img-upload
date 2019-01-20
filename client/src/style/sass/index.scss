@@ -1,4 +1,5 @@
-$lime: #9ce2da;
+$turquoise: #9ce2da;
+$dark-turquoise: #68a29c;
 $light-grey: #3f3f3f;
 $dark-grey: #292929;
 $text-color: #d9d9d9;
@@ -8,6 +9,7 @@ body {
   font-weight: 300;
   font-size: 14px;
   line-height: 24px;
+  text-align: center;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -15,16 +17,27 @@ body {
   background-color: $light-grey;
 }
 
+.header {
+  display: inline-block;
+  background-color: $turquoise;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  transition: all 0.3s;
+  &:hover {
+    background-color: $dark-turquoise;
+  }
+}
+
 h1 {
     text-align: center;
     text-transform: uppercase;
     font-size: 2.5em;
-    color: $lime;
+    color: $turquoise;
 }
 
 h2,
 h3 {
-  color: $lime;
+  color: $turquoise;
   text-transform: uppercase;
   line-height: 0.9em;
   letter-spacing: -1px;
@@ -40,11 +53,13 @@ h3 {
 
 p {
   margin: 10px 0;
+  text-align: center;
+  font-size: 1rem;
 }
 
 em {
   font-style: inherit;
-  color: $lime;
+  color: $turquoise;
 }
 
 .align-c {
@@ -59,6 +74,26 @@ em {
   text-align: center;
 }
 
+.footer {
+  text-align: center;
+  font-size: 0.8em;
+  line-height: initial;
+  margin-top: 10px;
+  a {
+    display: block;
+    color: $turquoise;
+  }
+}
+
+a {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.__react_component_tooltip {
+  opacity: 1 !important;
+} 
+
 .remove {
   float: right;
   cursor: pointer;
@@ -71,7 +106,7 @@ form {
   .box {
     text-align: left;
     background-color: $dark-grey;
-    padding: 30px 0;
+    padding: 30px 0 20px;
     border-radius: 5px;
     color: $text-color;
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
@@ -121,7 +156,7 @@ form {
     box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.5);
     background-color: $dark-grey;
     color: $text-color;
-    border-bottom: 2px solid $lime;
+    border-bottom: 2px solid $turquoise;
     transition: all 0.1s;
   }
   input:not([type="file"]) {
@@ -131,7 +166,7 @@ form {
     width: 26%;
     > option {
       background: $dark-grey;
-      outline: 1px solid $lime;
+      outline: 1px solid $turquoise;
     }
   }
 }
@@ -146,7 +181,7 @@ button {
     padding: 6px 10px;
     transition: all 0.3s;
     &:hover {
-      color: $lime
+      color: $turquoise
     }
     &.disabled {
       &:hover {

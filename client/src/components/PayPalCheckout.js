@@ -12,7 +12,7 @@ const PayPalCheckout = ({ total, onSuccess }) => {
 
   return (
     <PaypalExpressBtn
-      // env={paypal.env}
+      env={paypal.env}
       client={client}
       currency={'GBP'}
       total={total}

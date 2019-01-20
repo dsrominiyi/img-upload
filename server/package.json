@@ -10,7 +10,7 @@
     "compile": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/eslint/bin/eslint.js ./",
-    "deploy": "npm run compile; sh deploy.sh"
+    "deploy": "sh deploy.sh"
   },
   "author": "Damilola Rominiyi",
   "license": "ISC",

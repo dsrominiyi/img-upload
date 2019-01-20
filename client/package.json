@@ -47,6 +47,7 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-notifications": "^1.4.3",
-    "react-paypal-express-checkout": "^1.0.5"
+    "react-paypal-express-checkout": "^1.0.5",
+    "react-tooltip": "^3.9.2"
   }
 }
