@@ -1,8 +1,9 @@
-$turquoise: #9ce2da;
-$dark-turquoise: #68a29c;
+$turquoise: #288b80;
+$turquoise-lighten: lighten($turquoise, 10%);
 $light-grey: #3f3f3f;
 $dark-grey: #292929;
-$text-color: #d9d9d9;
+$text-color: #fff;
+$background: #212121;
 
 body {
   font-family: Open Sans Condensed;
@@ -14,7 +15,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
   text-size-adjust: 100%;
-  background-color: $light-grey;
+  background-color: $background;
 }
 
 .header {
@@ -24,7 +25,7 @@ body {
   box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
   transition: all 0.3s;
   &:hover {
-    background-color: $dark-turquoise;
+    background-color: $turquoise-lighten;
   }
 }
 
@@ -76,12 +77,15 @@ em {
 
 .footer {
   text-align: center;
-  font-size: 0.8em;
+  font-size: 0.8rem;
   line-height: initial;
   margin-top: 10px;
   a {
     display: block;
     color: $turquoise;
+    &:hover {
+      color: $turquoise-lighten;
+    }
   }
 }
 
@@ -181,7 +185,7 @@ button {
     padding: 6px 10px;
     transition: all 0.3s;
     &:hover {
-      color: $turquoise
+      color: $turquoise-lighten
     }
     &.disabled {
       &:hover {
@@ -201,5 +205,14 @@ button {
 }
 
 .paypal-button {
-  margin-top: 9px;
+  margin-top: 15px;
+}
+
+.info-icon {
+  padding:  4px 5px;
+  cursor: pointer;
+  fill: $turquoise;
+  &:hover {
+    fill: $turquoise-lighten;
+  }
 }

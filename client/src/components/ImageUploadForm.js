@@ -3,8 +3,9 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import ReactTooltip from 'react-tooltip';
 
 import PayPalCheckout from './PayPalCheckout';
-import DeleteCross from './svg/DeleteCross';
-import LoadingSpinner from './svg/LoadingSpinner';
+import DeleteCross from './svg/delete-cross.svg';
+import LoadingSpinner from './svg/loading-spinner.svg';
+import InfoIcon from './svg/info.svg';
 
 import { apiUrl } from '../config.json';
 
@@ -32,6 +33,7 @@ class ImageUploadForm extends Component {
   TOOLTIP_UPLOAD = `
     If you\'ve made payment and your image upload fails,<br>create a zip of your images and send them to contact@lifeandartmedia.co.uk using wetransfer.com. <br>
     Be sure to include your email and name in the message.`;
+  TOOLTIP_IMAGES = 'For best results, submit high resolution images. The quality of the final product is dependant on quality of the image';
 
   calculateCost = () => {
     const { imageCount } = this.state;
@@ -289,6 +291,7 @@ class ImageUploadForm extends Component {
                   >
                     Add Images
                   </button>
+                  <InfoIcon width={25} height={25} data-tip={this.TOOLTIP_IMAGES} />
                 </div>
 
                 <div className="fileList">{this.renderFileList()}</div>

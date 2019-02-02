@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 
 import ImageUploadForm from './components/ImageUploadForm';
 
-import './style/sass/index.scss';
+import './style/index.scss';
 
 render(
   <div>

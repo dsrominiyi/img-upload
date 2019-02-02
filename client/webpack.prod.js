@@ -23,6 +23,20 @@ module.exports = {
         test: /\.scss$/,
         loader: 'style-loader!css-loader!sass-loader?sourceMap',
         exclude: /node_modules/
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: 'babel-loader'
+          },
+          {
+            loader: 'react-svg-loader',
+            options: {
+              jsx: true // true outputs JSX tags
+            }
+          }
+        ]
       }
     ],
     // Disable handling of requires with a single expression
