@@ -83,6 +83,7 @@ em {
   a {
     display: block;
     color: $turquoise;
+    cursor: help;
     &:hover {
       color: $turquoise-lighten;
     }
@@ -210,7 +211,7 @@ button {
 
 .info-icon {
   padding:  4px 5px;
-  cursor: pointer;
+  cursor: help;
   fill: $turquoise;
   &:hover {
     fill: $turquoise-lighten;
